@@ -11,7 +11,7 @@ class Indexer(object):
         self.wordToDocList = {}
         self.stopWords = stopwords.words('english')
         self.data = dict()
-        with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\calc\\data.json', 'r') as fp:
+        with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\data.json', 'r') as fp:
             self.data = json.load(fp)
 
         for key, value in self.data.items():
@@ -41,7 +41,7 @@ class Indexer(object):
             json.dump(self.wordToDocList, fp, sort_keys=True, indent=4)
 
     def LoadIndexedState(self):
-        with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\calc\\indexed.json', 'r') as fp:
+        with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\indexed.json', 'r') as fp:
             self.wordToDocList = json.load(fp)
 
     def GetHtmlBody(self):
@@ -74,11 +74,12 @@ class Indexer(object):
         print (intersection)
         
         finalText = self.GetHtmlBody()
-
+        finalText += """<center>"""
         resultantDocs = []
         for docID in intersection:
             resultantDocs.append(self.docIdToTitle[docID])
             finalText += self.docIdToTitle[docID][0] + """<br>"""
+        finalText += """</center>"""
         finalText += self.GetHtmlEndBody()
 
         with open("C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\templates\\result2.html", 'w', encoding='utf8') as f:

@@ -4,17 +4,14 @@ from . import Indexer
 from . import Scheduler
 # Create your views here.
 
-indexer = Indexer.Indexer()
-indexer.LoadIndexedState()
-
-#scheduler = Scheduler.Scheduler(indexer)
-#scheduler.start()
+scheduler = Scheduler.Scheduler()
+scheduler.start()
 
 def home(request):
     return render(request, 'base.html')
 
 def search(request):
     val = request.GET['searchTerms']
-    indexer.Search(val)
+    scheduler.GetIndexer().Search(val)
 
     return render(request, 'result2.html')

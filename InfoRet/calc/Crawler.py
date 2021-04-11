@@ -1,17 +1,15 @@
 from requests import get as fetch
 from bs4 import BeautifulSoup
-from Indexer import Indexer
 import json
 
 ROOT_URL = 'https://scholar.google.co.uk'
 
-class crawler:
+class Crawler:
 
     def __init__(self, link, depth):
         self._link = link
         self._depth = depth
         self.authorsToPublications = {}
-        self.indexer = Indexer()
 
     def GetLink(self):
         return self._link
@@ -69,16 +67,3 @@ class crawler:
 
         with open('data.json', 'w') as fp:
             json.dump(self.authorsToPublications, fp, sort_keys=True, indent=4)
-
-
-
-obj = crawler("https://scholar.google.co.uk/citations?view_op=view_org&hl=en&org=9117984065169182779", 10)
-
-print(obj.GetLink())
-
-obj.StartCrawling()
-
-
-
-
-print (sw)
