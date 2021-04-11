@@ -16,9 +16,9 @@ class Scheduler(Thread):
 
     def run(self):
         while (True):
-            self.crawler.StartCrawling()
+            #self.crawler.StartCrawling()
             self.indexer = Indexer.Indexer()
-            self.indexer.IndexAllWords()
-            self.indexer.SaveIndexedState()
+            #self.indexer.IndexAllWords()
+            #self.indexer.SaveIndexedState()
             self.indexer.LoadIndexedState()
             sleep(EVERY_WEEK)

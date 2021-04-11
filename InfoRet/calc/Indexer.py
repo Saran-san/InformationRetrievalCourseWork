@@ -1,4 +1,6 @@
 from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
 import json
 
 class Indexer(object):
@@ -11,6 +13,7 @@ class Indexer(object):
         self.wordToDocList = {}
         self.stopWords = stopwords.words('english')
         self.data = dict()
+        self.ps = PorterStemmer()
         with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\data.json', 'r') as fp:
             self.data = json.load(fp)
 
@@ -23,9 +26,9 @@ class Indexer(object):
             return
         self.docIdToTitle[self._docID] = title
         self._docID += 1
-        for eachWord in title[0].split(' '):
+        for eachWord in word_tokenize(title[0]):
             if eachWord not in self.stopWords:
-                self._allWords.add(eachWord)
+                self._allWords.add(self.ps.stem(eachWord))
 
     def IndexAllWords(self):
         docIDs = []
@@ -37,7 +40,7 @@ class Indexer(object):
             docIDs = []
 
     def SaveIndexedState(self):
-        with open('indexed.json', 'w') as fp:
+        with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\indexed.json', 'w') as fp:
             json.dump(self.wordToDocList, fp, sort_keys=True, indent=4)
 
     def LoadIndexedState(self):
@@ -53,33 +56,42 @@ class Indexer(object):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giggle</title>
 </head>
-<body>"""
+<body>
+<center>"""
 
     def GetHtmlEndBody(self):
-        return """</body>
+        return """</center>
+        </body>
 </html>"""
 
     def Search(self, searchTerms):
         relevantDocs = []
 
         if searchTerms in self.data:
-            return self.data[searchTerms]
+            finalText = self.GetHtmlBody()
+            for eachTitle in self.data[searchTerms]:
+                finalText += eachTitle[0] + """<br>"""
+            finalText += self.GetHtmlEndBody()
+            with open("C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\templates\\result2.html", 'w', encoding='utf8') as f:
+                f.writelines(finalText)
+                f.flush()
+            return
 
-        for eachWord in searchTerms.split(' '):
+        for eachWord in word_tokenize(searchTerms):
             if (searchTerms not in self.stopWords) and (eachWord not in self.stopWords):
-                if eachWord in self.wordToDocList:
-                    relevantDocs.append(self.wordToDocList[eachWord])
+                if self.ps.stem(eachWord) in self.wordToDocList:
+                    relevantDocs.append(self.wordToDocList[self.ps.stem(eachWord)])
 
         intersection = set.intersection(*[set(eachSet) for eachSet in relevantDocs])
         print (intersection)
         
         finalText = self.GetHtmlBody()
-        finalText += """<center>"""
+
         resultantDocs = []
         for docID in intersection:
             resultantDocs.append(self.docIdToTitle[docID])
             finalText += self.docIdToTitle[docID][0] + """<br>"""
-        finalText += """</center>"""
+
         finalText += self.GetHtmlEndBody()
 
         with open("C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\templates\\result2.html", 'w', encoding='utf8') as f:
