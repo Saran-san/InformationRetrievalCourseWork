@@ -20,6 +20,7 @@ class Indexer(object):
         for key, value in self.data.items():
             for eachTitle in value:
                 self.AddToWordList(eachTitle)
+        print ("Indexer Initialised")
 
     def AddToWordList(self, title):
         if title[0] in self._allTitles:
@@ -38,6 +39,7 @@ class Indexer(object):
                     docIDs.append(key)
             self.wordToDocList[eachWord] = docIDs
             docIDs = []
+        print ("Indexing finished")
 
     def SaveIndexedState(self):
         with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\indexed.json', 'w') as fp:
@@ -46,6 +48,7 @@ class Indexer(object):
     def LoadIndexedState(self):
         with open('C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\indexed.json', 'r') as fp:
             self.wordToDocList = json.load(fp)
+            print ("Indexed File Loaded")
 
     def GetHtmlBody(self):
         return """<!DOCTYPE html>
@@ -90,7 +93,12 @@ class Indexer(object):
         resultantDocs = []
         for docID in intersection:
             resultantDocs.append(self.docIdToTitle[docID])
-            finalText += self.docIdToTitle[docID][0] + """<br>"""
+
+        resultantDocs.sort(key=lambda x: int(x[1]), reverse=True)
+
+        print (resultantDocs)
+        for docID in resultantDocs:
+            finalText += str(docID[0]) + "cited on " + str(docID[1]) + ", " + str(docID[2]) + """<br>"""
 
         finalText += self.GetHtmlEndBody()
 
