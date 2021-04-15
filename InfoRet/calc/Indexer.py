@@ -76,7 +76,11 @@ class Indexer(object):
         if searchTerms in self.data:
             finalText = self.GetHtmlBody()
             for eachTitle in self.data[searchTerms]:
-                finalText += eachTitle[0] + """<br>"""
+                #finalText += eachTitle[0] + """<br>"""
+                relevantDocs.append(eachTitle)
+            relevantDocs.sort(key=lambda x: int(x[1]), reverse=True)
+            for eachTitle in relevantDocs:
+                finalText += self.WrapWithLink(eachTitle[0], eachTitle[3]) + ", cited on " + str(eachTitle[1]) + ", " + str(eachTitle[2]) + """<br>"""
             finalText += self.GetHtmlEndBody()
             with open("C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\templates\\result2.html", 'w', encoding='utf8') as f:
                 f.writelines(finalText)
