@@ -80,7 +80,9 @@ class Indexer(object):
                 relevantDocs.append(eachTitle)
             relevantDocs.sort(key=lambda x: int(x[1]), reverse=True)
             for eachTitle in relevantDocs:
-                finalText += self.WrapWithLink(eachTitle[0], eachTitle[3]) + ", cited on " + str(eachTitle[1]) + ", " + str(eachTitle[2]) + """<br>"""
+                finalText += self.WrapWithLink(eachTitle[0], eachTitle[3]) + """<br>"""
+                finalText += "cited on " + str(eachTitle[1]) + ", " + str(eachTitle[2]) + """<br>"""
+                finalText += """<br>"""
             finalText += self.GetHtmlEndBody()
             with open("C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\templates\\result2.html", 'w', encoding='utf8') as f:
                 f.writelines(finalText)
@@ -105,8 +107,9 @@ class Indexer(object):
 
         print (resultantDocs)
         for docID in resultantDocs:
-            finalText += self.WrapWithLink(docID[0], docID[3]) + ", cited on " + str(docID[1]) + ", " + str(docID[2]) + """<br>"""
-
+            finalText += self.WrapWithLink(docID[0], docID[3]) +  """<br>"""
+            finalText += "cited on " + str(docID[1]) + ", " + str(docID[2]) + """<br>"""
+            finalText += """<br>"""
         finalText += self.GetHtmlEndBody()
 
         with open("C:\\Users\\Saravanacoumar\\courseWorkInfoRet\\InfoRet\\templates\\result2.html", 'w', encoding='utf8') as f:
