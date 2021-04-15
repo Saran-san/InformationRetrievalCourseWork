@@ -67,6 +67,9 @@ class Indexer(object):
         </body>
 </html>"""
 
+    def WrapWithLink(self, title, link):
+        return """<a href=""" + link + """>""" + title + """</a>"""
+
     def Search(self, searchTerms):
         relevantDocs = []
 
@@ -98,7 +101,7 @@ class Indexer(object):
 
         print (resultantDocs)
         for docID in resultantDocs:
-            finalText += str(docID[0]) + "cited on " + str(docID[1]) + ", " + str(docID[2]) + """<br>"""
+            finalText += self.WrapWithLink(docID[0], docID[3]) + ", cited on " + str(docID[1]) + ", " + str(docID[2]) + """<br>"""
 
         finalText += self.GetHtmlEndBody()
 

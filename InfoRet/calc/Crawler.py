@@ -22,7 +22,7 @@ class Crawler:
         yearOfPublicationsList = parsedHtmlText.findAll('td', class_='gsc_a_y')
         publications = []
         for (eachBook, citation, year) in zip(publicationList, citationsList, yearOfPublicationsList):
-            publications.append(tuple((eachBook.a.text, citation.a.text, year.span.text)))
+            publications.append(tuple((eachBook.a.text, citation.a.text, year.span.text, link)))
         return publications
 
     def CleanUpTheLink(self, link):
